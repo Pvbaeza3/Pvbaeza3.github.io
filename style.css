@@ -1,0 +1,95 @@
+/* Estilos previos */
+html{
+    background-image: url(/Img/game-background-light.png);
+    background-size: cover;
+    overflow: hidden;
+
+}
+body {    
+    margin: 0;
+    padding: 0;
+    height: 100vh; /* Establece la altura al 100% de la ventana gráfica */
+}
+
+.container {
+    position: relative; /* Establece una posición relativa */
+    background-color: gray;
+    width: 100%;
+    height: 100vh; /* Ajusta la altura del contenedor para ocupar toda la pantalla */
+}
+
+li {
+    list-style: none;
+}
+
+a {
+    color: black;
+    text-decoration: none;
+}
+
+.circle-container {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+}
+
+#contadorSegundos{
+    font-size: 30px;
+    color: white;
+    position: absolute;
+    margin-top: 2.0%;
+    margin-left: 53.2%;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+}
+
+#puntuacion{
+    font-size: 30px;
+    color: white;
+    position: absolute;
+    margin-top: 2%;
+    margin-left: 38%;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+}
+
+#texto_puntuacion{
+    color: white;
+}
+
+.boton-container {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.circle {
+    position: absolute;
+    background-color: #007bff; /* Color del círculo */
+    border-radius: 50%; /* Para que sea un círculo */
+}
+@keyframes crecer {
+    0% {
+        transform: scale(0); /* Empieza desde el tamaño 0 */
+    }
+    100% {
+        transform: scale(1); /* Termina en el tamaño normal */
+    }
+}
+
+
+@keyframes encoger {
+    0% {
+        transform: scale(1); /* Comienza con el tamaño normal */
+        opacity: 1; /* Comienza completamente visible */
+    }
+    100% {
+        transform: scale(0); /* Termina en el tamaño 0 */
+        opacity: 0; /* Termina completamente transparente */
+    }
+}

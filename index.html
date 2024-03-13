@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campo de Tiro</title>
+    <!-- Agrega enlaces a tus archivos CSS -->
+    <link rel="stylesheet" href="style.css">
+    <!-- Agrega enlaces a tus archivos JavaScript si los tienes -->
+    <!-- Agrega otros elementos de head según sea necesario, como meta etiquetas, enlaces a fuentes, etc. -->
+</head>
+
+<body>
+    <div class="circle-container"> <!-- Agregamos la clase 'circle' al contenedor -->
+        <div id="puntuacion">
+            <p>0</p>
+        </div>
+
+        <div id="contadorSegundos">0</div>
+
+        <label for="tiempoJuego">Selecciona el tiempo de juego:</label>
+        <select id="tiempoJuego">
+            <option value="30">30 segundos</option>
+            <option value="60">60 segundos</option>
+        </select>
+        <div class="boton-container">
+            <button id="startButton" class="boton_comenzar ">Comenzar</button>
+        </div>
+    </div>
+    <script src="circulos.js" defer></script>
+    <script src="puntuacion.js" defer></script>
+</body>
+
+</html>
