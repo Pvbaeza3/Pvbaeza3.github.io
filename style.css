@@ -11,6 +11,14 @@ body {
     height: 100vh; /* Establece la altura al 100% de la ventana gráfica */
 }
 
+.cursor-personalizado {
+    cursor: url('Img/mira.png.png') 12.5 12.5, auto;
+}
+
+label{
+    color: white;
+}
+
 .container {
     position: relative; /* Establece una posición relativa */
     background-color: gray;
