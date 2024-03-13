@@ -5,9 +5,19 @@ const puntuacionElemento = document.getElementById('puntuacion');
 
 const porcentajeAciertosElemento = document.getElementById('porcentajeAciertos');
 
+const audioElement = document.createElement('audio');
+audioElement.src = 'sound/sonido1.mp3'; // Reemplaza 'acertaste.mp3' con la ruta de tu archivo de sonido
+
+
 function incrementarPuntuacion() {
     puntuacion += 1000;
     actualizarPuntuacion();
+    reproducirSonido();
+}
+
+function reproducirSonido() {
+    audioElement.currentTime = 0; // Reinicia el audio al principio
+    audioElement.play();
 }
 
 function reiniciarPuntuacion() {
