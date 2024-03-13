@@ -1,25 +1,75 @@
+let puntuacion = 0;
+let tirosRealizados = 0;
+let tirosAcertados = 1;
+const puntuacionElemento = document.getElementById('puntuacion');
 
-// Función para generar automáticamente los 5 círculos con un retraso de 500 milisegundos entre cada uno
+const porcentajeAciertosElemento = document.getElementById('porcentajeAciertos');
+
+function incrementarPuntuacion() {
+    puntuacion += 1000;
+    actualizarPuntuacion();
+}
+
+function reiniciarPuntuacion() {
+    puntuacion = 0;
+    actualizarPuntuacion();
+}
+
+function restarPuntuacion(puntos) {
+    if (puntuacion > 0) {
+        puntuacion -= puntos;
+        actualizarPuntuacion();
+    }
+}
+
+function actualizarPuntuacion() {
+    puntuacionElemento.textContent = `${puntuacion}`;
+}
+
+function actualizarPorcentajeAciertos() {
+    const porcentajeAciertosElemento = document.getElementById('porcentajeAciertos');
+    console.log(tirosRealizados)
+    console.log(tirosAcertados)
+    if (porcentajeAciertosElemento) {
+        if (tirosRealizados > 0) {
+            let porcentaje = (tirosAcertados / tirosRealizados) * 100;
+            porcentajeAciertosElemento.textContent = `${porcentaje.toFixed(2)}%`;
+        } else {
+            porcentajeAciertosElemento.textContent = `0%`;
+        }
+    } else {
+        console.error("El elemento 'porcentajeAciertos' no se encontró en el DOM.");
+    }
+}
+
+
+
+
+function restarPuntosClickFuera(event) {
+    const target = event.target;
+    if (!target.classList.contains('circle')) {
+        restarPuntuacion(500);
+        tirosRealizados++;
+        actualizarPorcentajeAciertos();
+    }
+}
+
 function generarCirculosAutomaticamente(tiempoSeleccionado) {
     let tiempoTranscurrido = 0;
 
     const interval = setInterval(() => {
-        tiempoTranscurrido += 500; // Incrementamos el tiempo transcurrido en 500 milisegundos
-        if (tiempoTranscurrido >= tiempoSeleccionado * 1000) { // Convertimos el tiempo seleccionado a milisegundos
+        tiempoTranscurrido += 500;
+        if (tiempoTranscurrido >= tiempoSeleccionado * 1000) {
             clearInterval(interval);
-            console.log(tiempoTranscurrido)
             return;
         }
 
         setTimeout(function() {
-            if (tiempoTranscurrido >= tiempoSeleccionado * 1000) { 
-            mostrarBotonContainer()
-        }
-        }, 4500); // 3000 milisegundos son 3 segundos
+            if (tiempoTranscurrido >= tiempoSeleccionado * 1000) {
+                mostrarBotonContainer();
+            }
+        }, 8500);
 
-        if (tiempoTranscurrido >= tiempoSeleccionado * 1000) { 
-            mostrarBotonContainer()
-        }
         const circulos = document.querySelectorAll('.circle');
         if (circulos.length > 6) {
             for (let i = 0; i < circulos.length - 6; i++) {
@@ -28,28 +78,23 @@ function generarCirculosAutomaticamente(tiempoSeleccionado) {
         }
         if (circulos.length < 6) {
             generarCirculo();
-        } 
+        }
     }, 500);
-}
-let puntuacion = 0;
-const puntuacionElemento = document.getElementById('puntuacion');
 
-function incrementarPuntuacion() {
-    puntuacion = puntuacion + 1000;
-    puntuacionElemento.textContent = `${puntuacion}`;
-}
-function reiniciarPuntuacion() {
-    puntuacion = 0;
-    puntuacionElemento.textContent = `${puntuacion}`;
-}
+    if (tiempoTranscurrido < tiempoSeleccionado * 1000) {
+        let puntos = -500;
 
+        document.body.addEventListener('click', restarPuntosClickFuera);
+        restarPuntuacion(puntos);
+    }
+}
 
 const startButton = document.getElementById('startButton');
 startButton.addEventListener('click', () => {
     iniciarContadorSegundos();
-    reiniciarPuntuacion()
+    reiniciarPuntuacion();
     const tiempoSeleccionado = parseInt(document.getElementById('tiempoJuego').value);
-    ocultarBotonContainer(); // Ocultar el contenedor del botón
+    ocultarBotonContainer();
     generarCirculosAutomaticamente(tiempoSeleccionado);
 });
 
@@ -63,26 +108,22 @@ function mostrarBotonContainer() {
     botonContainer.style.display = 'flex';
 }
 
-
-// Función para iniciar el contador de segundos
 function iniciarContadorSegundos() {
-    let segundosTranscurridos = 0; // Declara la variable dentro de la función para que se reinicie cada vez que se inicia el contador
+    let segundosTranscurridos = 0;
     intervaloSegundos = setInterval(() => {
         segundosTranscurridos++;
         actualizarContadorSegundos(segundosTranscurridos);
-        if(segundosTranscurridos>=30) {
-            clearInterval(intervaloSegundos)
-        } // Pasa la variable como argumento
-    }, 1000); // Ejecutar cada segundo (1000 milisegundos)
+        if (segundosTranscurridos >= 30) {
+            clearInterval(intervaloSegundos);
+        }
+    }, 1000);
 }
 
-// Función para actualizar el contador de segundos en el HTML
 function actualizarContadorSegundos(segundosTranscurridos) {
     const contadorSegundos = document.getElementById('contadorSegundos');
     contadorSegundos.textContent = `${segundosTranscurridos}`;
 }
 
-// Función para eliminar los círculos excedentes
 function eliminarCirculosExcedentes() {
     const circulos = document.querySelectorAll('.circle');
     if (circulos.length > 6) {
@@ -92,55 +133,47 @@ function eliminarCirculosExcedentes() {
     }
 }
 
-
-// Obtenemos el contenedor donde se generarán los círculos
 const contenedor = document.querySelector('.circle-container');
 
-// Función para generar un círculo aleatorio
-// Función para generar un círculo aleatorio
 function generarCirculo() {
-    const radio = 40; // Radio fijo del círculo
+    const radio = 40;
+    const margenX = window.innerWidth * 0.1;
+    const margenY = window.innerHeight * 0.1;
 
-    const margenX = window.innerWidth * 0.1; // 10% del ancho de la pantalla
-    const margenY = window.innerHeight * 0.1; // 10% del alto de la pantalla
-
-    // Posición X e Y aleatoria dentro del margen de la pantalla
     let posX, posY;
     do {
         posX = Math.random() * (window.innerWidth - margenX * 2 - radio * 2) + margenX + radio;
         posY = Math.random() * (window.innerHeight - margenY * 2 - radio * 2) + margenY + radio;
-    } while (haySuperposicion(posX, posY)); // Verificar si hay superposición
+    } while (haySuperposicion(posX, posY));
 
-    // Creamos el elemento de círculo
     const circulo = document.createElement('div');
     circulo.classList.add('circle');
     circulo.style.width = `${radio * 2}px`;
     circulo.style.height = `${radio * 2}px`;
     circulo.style.left = `${posX}px`;
     circulo.style.top = `${posY}px`;
-
-    // Agregamos la animación de crecimiento antes de agregar el círculo al contenedor
     circulo.style.animation = 'crecer 3s forwards';
 
-    // Agregamos el evento de clic para eliminar el círculo
     circulo.addEventListener('click', () => {
         if (circulo.parentNode === contenedor) {
             contenedor.removeChild(circulo);
             incrementarPuntuacion();
-            eliminarCirculosExcedentes()
+            tirosRealizados++;
+            tirosAcertados++;
+            actualizarPorcentajeAciertos();
+            eliminarCirculosExcedentes();
         }
     });
+    
 
-    // Agregamos el círculo al contenedor después de aplicar la animación
     contenedor.appendChild(circulo);
 
-    // Iniciamos la animación de encogimiento después de 3 segundos
     setTimeout(() => {
-        circulo.style.animation = 'encoger 3s forwards'; // Cambiamos la animación a achicar después de 3 segundos
+        circulo.style.animation = 'encoger 3s forwards';
         setTimeout(() => {
             if (circulo.parentNode === contenedor) {
-                contenedor.removeChild(circulo); // Eliminamos el círculo después de 3 segundos (tiempo total de animación)
-                eliminarCirculosExcedentes()
+                contenedor.removeChild(circulo);
+                eliminarCirculosExcedentes();
             }
         }, 1000);
     }, 2500);
@@ -153,19 +186,25 @@ function generarCirculo() {
     }
 }
 
-
-
-
-// Función para verificar si hay superposición con los círculos existentes
 function haySuperposicion(posX, posY) {
     const circulos = document.querySelectorAll('.circle');
     for (const circulo of circulos) {
         const circuloPosX = parseInt(circulo.style.left);
         const circuloPosY = parseInt(circulo.style.top);
         const distancia = Math.sqrt((circuloPosX - posX) ** 2 + (circuloPosY - posY) ** 2);
-        if (distancia < 80) { // Suma de los radios de los círculos
-            return true; // Hay superposición
+        if (distancia < 80) {
+            return true;
         }
     }
-    return false; // No hay superposición
+    return false;
 }
+
+function calcularPorcentajeAciertos() {
+    if (tirosRealizados > 0) {
+        const porcentaje = (tirosAcertados / tirosRealizados) * 100;
+        return porcentaje.toFixed(2);
+    } else {
+        return 0;
+    }
+}
+
